@@ -14,11 +14,11 @@ Colortizer software translates a grid of color-tagged objects into a matrix of I
 
 ## Useful Tips
 * **Colortizer** takes a webcam input of colored tags and turns it into a matrix of IDs & rotations passed via UDP
-* **DO NOT** edit the *CityScope/libraries/* folder needed to run Processing:
+* **DO NOT** edit the *Processing/libraries/* folder needed to run Processing:
 
 ## Development Notes
 Colortizer scripts are compiled and tested with Processing IDE 2.2.1 on Windows7 and OSX on a Logitech C920 Webcam.
-As of January 12, 2016, the following Processing libraries are required.  These should be kept up to date in the repository’s *CityScope/Processing/libraries/* folder:
+As of January 12, 2016, the following Processing libraries are required.  These should be kept up to date in the repository’s *Colortizer/Processing/libraries/* folder:
 * **OpenCV** by Greg Borenstein
 * **UDP** by Stephane Cousot
 

@@ -3,7 +3,6 @@
  * Ougoing Port:  6152
  *
  * REPORT ALL CHANGES WITH DATE AND USER IN THIS AREA:
- * - Updated to include location array "locArray" that passes x, y, width, and height values for scanGrids
  * - 2016/01/04 Yasushi Connect to a meteor app via DDP and send
  * -
  * -
@@ -16,11 +15,17 @@ UDP udp;  // define the UDP object
 
 boolean busyImporting = false;
 boolean viaUDP = true;
+boolean UDPtoServer = false;
 
-boolean karthikPrototype = false;
+// Karthik's Machine
+String UDPServer = "104.131.179.31";
+int UDPServer_PORT = 33333;
 
-boolean ryanUDP = false;
-int countRyanUDP = 0;
+/*
+// CityScope Machine
+String UDPServer_IP = "cityscope.media.mit.edu";
+int UDPServer_PORT = 9998;
+*/
 
 /**
 * importing the DDP library and dependencies (2016/01/05 Y.S.)
@@ -172,16 +177,8 @@ void sendData() {
     */
     if(enableDDP)  ddp.call("sendCapture",new Object[]{gson.toJson(state_data)});
 
-    // Karthik's IP Address
-    if(karthikPrototype) {
-      if (millis() % 1000 <=150) udp.send( dataToSend, "104.131.179.31", 33333 );
-    }
-    
-    // Ryan's IP Address
-    countRyanUDP ++;
-    if(ryanUDP && countRyanUDP >= 30) {
-      udp.send( dataToSend, "18.85.27.198", 7004 );
-      countRyanUDP = 0;
+    if(UDPtoServer) {
+      if (millis() % 1000 <=150) udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
     }
     
     //println("update received");

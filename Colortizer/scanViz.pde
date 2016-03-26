@@ -467,7 +467,7 @@ void drawIDMode(int IDMode) {
 void drawVRMode() {
   fill(#FFFFFF);
   textAlign(LEFT);
-  text("Export to IPs for Karthik's VR Prototype: " + karthikPrototype + " [Press 'V' to toggle on/off]", 
+  text("Export to IPs for Karthik's VR Prototype: " + UDPtoServer + " [Press 'V' to toggle on/off]", 
        24+scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadWidth()+10, -6.0*tsize);
 }
 
@@ -790,10 +790,10 @@ void keyPressed() {
       }
       break;
     case 'V':
-      if (karthikPrototype) {
-        karthikPrototype = false;
+      if (UDPtoServer) {
+        UDPtoServer = false;
       } else {
-        karthikPrototype = true;
+        UDPtoServer = true;
       }
       break;
     case 'N':

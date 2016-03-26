@@ -17,9 +17,11 @@ Colortizer software translates a grid of color-tagged objects into a matrix of I
 
 ## Screen Shots
 * Define and un-distort rectilinear area to scan
- ![Colortizer](screenshots/Colortizer02.PNG "Colortizer")
+ ![Colortizer](docs/Colortizer02.PNG "Colortizer")
 * Fine-tune grid alignment and color callibration
- ![Colortizer](screenshots/Colortizer01.PNG "Colortizer")
+ ![Colortizer](docs/Colortizer01.PNG "Colortizer")
+* Example of 16 Tag Patterns Read by Colortizer
+ ![Tags](docs/DOCUMENTATION002.jpg "Tags")
 
 ## Development Notes
 Colortizer scripts are compiled and tested with Processing IDE 2.2.1 on Windows7 and OSX on a Logitech C920 Webcam.

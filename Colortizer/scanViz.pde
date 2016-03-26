@@ -797,6 +797,9 @@ void keyPressed() {
       }
       break;
     case 'N':
+      if (!enableDDP) {
+        initDDP();
+      }
       enableDDP = !enableDDP;
       break;
   }

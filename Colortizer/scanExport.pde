@@ -9,31 +9,30 @@
  * -
  */
 
-import com.google.gson.Gson; // you don't need this if your just using DDPclient
-import ddpclient.*;
-
-
-boolean busyImporting = false;
-boolean viaUDP = true;
-boolean karthikPrototype = false;
-boolean ryanUDP = false;
-int countRyanUDP = 0;
 
 // import UDP library
 import hypermedia.net.*;
 UDP udp;  // define the UDP object
 
+boolean busyImporting = false;
+boolean viaUDP = true;
+
+boolean karthikPrototype = false;
+
+boolean ryanUDP = false;
+int countRyanUDP = 0;
+
 /**
 * importing the DDP library and dependencies (2016/01/05 Y.S.)
 * 
 */
-boolean enableDDP = false;
-String DDPAddress = "104.131.183.20";
-
-
+import com.google.gson.Gson; // you don't need this if your just using DDPclient
+import ddpclient.*;
 DDPClient ddp;
 Gson gson; // handy to have one gson converter...
 int[][] state_data; // because this object is ment to be json-ized
+boolean enableDDP = false;
+String DDPAddress = "104.131.183.20";
 
 void startUDP(){
 
@@ -48,17 +47,22 @@ void startUDP(){
   }
   
   if (enableDDP) {
-    /**
-    * DDP initiation (2016/01/04 Y.S.)
-    * 
-    * assuming that this function is called in init 
-    * initiating will automatically connect
-    */
-    //ddp = new DDPClient(this,"localhost",3000);
-    ddp = new DDPClient(this,DDPAddress,80);
-    gson = new Gson();
-    ddp.setProcessing_delay(100);
+    initDDP();
   }
+}
+
+
+void initDDP() {
+/**
+  * DDP initiation (2016/01/04 Y.S.)
+  * 
+  * assuming that this function is called in init 
+  * initiating will automatically connect
+  */
+  //ddp = new DDPClient(this,"localhost",3000);
+  ddp = new DDPClient(this,DDPAddress,80);
+  gson = new Gson();
+  ddp.setProcessing_delay(100);
 }
 
 void sendData() {

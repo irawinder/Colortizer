@@ -233,7 +233,7 @@ void receive( byte[] data, String ip, int port ) {  // <-- extended handler
   // get the "real" message =
   String message = new String( data );
   //println(message);
-  saveStrings("data.txt", split(message, "\n"));
+  //saveStrings("data.txt", split(message, "\n"));
   String[] split = split(message, "\n");
 
   if (!busyImporting) {

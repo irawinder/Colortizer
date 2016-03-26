@@ -1,6 +1,5 @@
 # Colortizer Repository
-By Ira Winder [jiw@mit.edu] MIT Media Lab
-Copyright March, 2014
+Ira Winder [jiw@mit.edu] MIT Media Lab, Copyright March 2014
 
 Colortizer software translates a grid of color-tagged objects into a matrix of IDs and their rotation, largely to serve the "CityScope" platform at:
 [http://cp.media.mit.edu/city-simulation](http://cp.media.mit.edu/city-simulation), 

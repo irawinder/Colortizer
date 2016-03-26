@@ -18,7 +18,7 @@ boolean viaUDP = true;
 boolean UDPtoServer = false;
 
 // Karthik's Machine
-String UDPServer = "104.131.179.31";
+String UDPServer_IP = "104.131.179.31";
 int UDPServer_PORT = 33333;
 
 /*

@@ -13,12 +13,7 @@ Colortizer software translates a grid of color-tagged objects into a matrix of I
 
 ## Useful Tips
 * **Colortizer** takes a webcam input of colored tags and turns it into a matrix of IDs & rotations passed via UDP
-* **DO NOT** edit the following folders needed to run Processing:
-	* *CityScope/examples/*
-	* *CityScope/libraries/*
-	* *CityScope/modes/*
-	* *CityScope/tools/*
-	* 
+* **DO NOT** edit the *CityScope/libraries/* folder needed to run Processing:
 * Define and un-distort rectilinear area to scan
   * ![Colortizer](screenshots/Colortizer02.PNG "Colortizer")
 * Fine-tune grid alignment and color callibration

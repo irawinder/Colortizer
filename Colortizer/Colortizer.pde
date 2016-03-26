@@ -1,5 +1,5 @@
-// Colortizer v4.1
-String version = "Colortizer, V4.1";
+// Colortizer v4.2
+String version = "Colortizer, V4.2";
 
 // This software distorts webcam feeds into rectilinear matrices of color data.
 // Run software to see key definitions

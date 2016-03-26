@@ -46,18 +46,19 @@ void startUDP(){
     //udp.log( true );     // <-- printout the connection activity
     udp.listen( true );
   }
-
-  /**
-  * DDP initiation (2016/01/04 Y.S.)
-  * 
-  * assuming that this function is called in init 
-  * initiating will automatically connect
-  */
-  //ddp = new DDPClient(this,"localhost",3000);
-  ddp = new DDPClient(this,DDPAddress,80);
-  gson = new Gson();
-  ddp.setProcessing_delay(100);
-
+  
+  if (enableDDP) {
+    /**
+    * DDP initiation (2016/01/04 Y.S.)
+    * 
+    * assuming that this function is called in init 
+    * initiating will automatically connect
+    */
+    //ddp = new DDPClient(this,"localhost",3000);
+    ddp = new DDPClient(this,DDPAddress,80);
+    gson = new Gson();
+    ddp.setProcessing_delay(100);
+  }
 }
 
 void sendData() {

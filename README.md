@@ -4,7 +4,7 @@ Ira Winder [jiw@mit.edu] MIT Media Lab, Copyright March 2014
 Colortizer software translates a grid of color-tagged objects into a matrix of IDs and their rotation, largely to serve the "CityScope" platform at:
 [http://cp.media.mit.edu/city-simulation](http://cp.media.mit.edu/city-simulation), 
 [Youtube: Lego Scanning Technology Invented by MIT] (https://youtu.be/3jvmoj7pLZU)
-* Arrange a Meeting with Ira Winder [jiw@mit.edu] before making any commits to this repository.
+* Arrange a Meeting with Ira before making any commits to this repository.
 * Avoid forking the repository and instead opt to make a new branch.
 
 ## Setup

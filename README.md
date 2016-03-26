@@ -6,6 +6,7 @@ Colortizer software translates a grid of color-tagged objects into a matrix of I
 [Youtube: Lego Scanning Technology Invented by MIT] (https://youtu.be/3jvmoj7pLZU)
 * Arrange a Meeting with Ira before making any commits to this repository.
 * Avoid forking the repository and instead opt to make a new branch.
+* Colortizer is pretty scalable and flexible in its back end but the front-end isn't very developed.  expanding the drid capactiy wouln't be terribly hard as long as you're willing to poke around the back end.
 
 ## Setup
 1. Clone Repository to your machine

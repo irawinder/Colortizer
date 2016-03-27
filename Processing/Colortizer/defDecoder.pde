@@ -10,10 +10,17 @@ void initDecoders() {
   
   if (decode) {
     
-    tagDecoder = new TagDecoder[1];
+    tagDecoder = new TagDecoder[2];
     tagDecoder[0] = new TagDecoder(buildingDef, rotationDef); // main Patterned Scan Grid
+    tagDecoder[1] = new TagDecoder(buildingDef, rotationDef); // Programmable Building Dock
     
-    /*
+    sliderDecoder = new SliderDecoder[4];
+    sliderDecoder[0] = new SliderDecoder(0,1); // Slider 1
+    sliderDecoder[1] = new SliderDecoder(0,1); // Toggle 1
+    sliderDecoder[2] = new SliderDecoder(0,1); // Toggle 2
+    sliderDecoder[3] = new SliderDecoder(0,1); // Toggle 3
+    
+    /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
     colorDecoder[1] = new ColorDecoder(); // reference color 1
     colorDecoder[2] = new ColorDecoder(); // reference color 2
     colorDecoder[3] = new ColorDecoder(); // reference color 3
@@ -43,7 +50,18 @@ void updateDecoders() {
     //Decodes grid that we will assign color codes
     tagDecoder[0].decoder(scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadCode(), scanGrid[numGAforLoop[imageIndex] + gridIndex].IDMode);
     
-    /*
+    //Decodes Programmable Building Dock
+    tagDecoder[1].decoder(scanGrid[1].getQuadCode(), scanGrid[1].IDMode);
+    
+    // Slider
+    sliderDecoder[0].decoder(scanGrid[2].getQuadCode());
+    
+    //Toggles (scanGrid should only have one row or 1 column to work as slider)
+    sliderDecoder[1].decoder(scanGrid[3].getQuadCode());
+    sliderDecoder[2].decoder(scanGrid[4].getQuadCode());
+    sliderDecoder[3].decoder(scanGrid[5].getQuadCode());
+    
+    /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
     
     //Decodes Reference Colors
     tempCode = new int[1][1][1][1];

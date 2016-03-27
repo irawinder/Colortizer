@@ -36,10 +36,10 @@ int imageIndex = 0; //Selection of scanImage to start
 
 //Number of scan grids to be created on each warped image
 // For example:
-// {1,1,1,1} creates 4 scan grids, each on their own, separately programmed, distorted image
+// {1,1,1,1} creates 4 scan grids, each on their own, separately programmed, distorted image.  The first grid on each distored image is reserved for tagDecoding.  
 // {4} creates 4 scan grids, all sharing the same distorted image
 // Max Spec: {20,20,20,20,20,20,20,20,20,20} <-- will probably run terribly, though
-int[] numGridAreas; // 1 grid for 1 distortion area; loads from "numGridAreas.TSV"
+int[] numGridAreas; // loads from "numGridAreas.TSV"
 
 // Position within array that describes available cameras
 int camera = 0;

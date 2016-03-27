@@ -93,19 +93,19 @@ void sendData() {
         dataToSend += tagDecoder[0].id[u][v] ;
         dataToSend += "\t" ;
 
-//        // U Position
-//        dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex] + gridIndex][0];
-//        dataToSend += "\t" ;
-//
-//        // V Position
-//        dataToSend += v + exportOffsets[numGAforLoop[imageIndex] + gridIndex][1];
-        
         // U Position
-        dataToSend += tagDecoder[0].U-u-1;
+        dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex] + gridIndex][0];
         dataToSend += "\t" ;
 
         // V Position
-        dataToSend += v;
+        dataToSend += v + exportOffsets[numGAforLoop[imageIndex] + gridIndex][1];
+        
+//        // U Position
+//        dataToSend += tagDecoder[0].U-u-1;
+//        dataToSend += "\t" ;
+//
+//        // V Position
+//        dataToSend += v;
 
         ////// BEGIN Added March 3, 2015 by Ira Winder ///////
 
@@ -171,6 +171,8 @@ void sendData() {
     //saveStrings("data.txt", split(dataToSend, "\n"));
     //udp.send( dataToSend, "18.85.55.241", 6152 );
     udp.send( dataToSend, "localhost", 6152 );
+    
+    saveStrings("data.txt", split(dataToSend, "\n"));
 
     /**
     * sending data via DDP (2016/01/04 Y.S.)

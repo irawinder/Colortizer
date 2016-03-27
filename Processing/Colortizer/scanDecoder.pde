@@ -117,7 +117,7 @@ public class SliderDecoder {
       code = 1;
     }
     
-    code = min + code*(max-min)+.01;
+    code = min + code*(max-min);
   }
 }
 

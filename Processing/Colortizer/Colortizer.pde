@@ -31,7 +31,7 @@ Step 5: Run application
 
 */
 
-boolean enableToggles = false;
+boolean enableToggles = true;
 
 // Change this number to change which Area is scanned (i.e. 0, 1, or 2)
 // Only used when drawing feeds from multiple webcams, really

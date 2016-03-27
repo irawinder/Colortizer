@@ -73,8 +73,6 @@ void setupScan() {
     }
   }
   
-  
-  
   for(int i=0; i<exportOffsets.length; i++) {
     exportOffsets[i][0] = exportOffsetsTSV.getInt(i, 0);
     exportOffsets[i][1] = exportOffsetsTSV.getInt(i, 1);

@@ -48,7 +48,7 @@ void updateDecoders() {
   if (decode) {
     
     //Decodes grid that we will assign color codes
-    tagDecoder[0].decoder(scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadCode(), scanGrid[numGAforLoop[imageIndex] + gridIndex].IDMode);
+    tagDecoder[0].decoder(scanGrid[numGAforLoop[imageIndex]].getQuadCode(), scanGrid[numGAforLoop[imageIndex]].IDMode);
     
     if (enableToggles) {
       //Decodes Programmable Building Dock

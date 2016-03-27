@@ -82,9 +82,40 @@ void sendData() {
     // Scan Grid Location (for referencing grid offset file)
     dataToSend += "gridIndex";
     dataToSend += "\t" ;
-    dataToSend += numGAforLoop[imageIndex] + gridIndex;
-
+    dataToSend += imageIndex;
     dataToSend += "\n" ;
+    
+    if (enableToggles) {
+      dataToSend += "dockID";
+      dataToSend += "\t" ;
+      dataToSend += tagDecoder[1].id[0][0];
+      dataToSend += "\n" ;
+      
+      dataToSend += "dockRotation";
+      dataToSend += "\t" ;
+      dataToSend += tagDecoder[1].rotation[0][0];
+      dataToSend += "\n" ;
+      
+      dataToSend += "slider1";
+      dataToSend += "\t" ;
+      dataToSend += sliderDecoder[0].code;
+      dataToSend += "\n" ;
+      
+      dataToSend += "toggle1";
+      dataToSend += "\t" ;
+      dataToSend += sliderDecoder[1].code;
+      dataToSend += "\n" ;
+      
+      dataToSend += "toggle2";
+      dataToSend += "\t" ;
+      dataToSend += sliderDecoder[2].code;
+      dataToSend += "\n" ;
+      
+      dataToSend += "toggle3";
+      dataToSend += "\t" ;
+      dataToSend += sliderDecoder[3].code;
+      dataToSend += "\n" ;
+    }
     
     for (int u=0; u<tagDecoder[0].U; u++) {
       for (int v=0; v<tagDecoder[0].V; v++) {
@@ -94,11 +125,11 @@ void sendData() {
         dataToSend += "\t" ;
 
         // U Position
-        dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex] + gridIndex][0];
+        dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0];
         dataToSend += "\t" ;
 
         // V Position
-        dataToSend += v + exportOffsets[numGAforLoop[imageIndex] + gridIndex][1];
+        dataToSend += v + exportOffsets[numGAforLoop[imageIndex]][1];
         
 //        // U Position
 //        dataToSend += tagDecoder[0].U-u-1;
@@ -136,7 +167,7 @@ void sendData() {
 //    dataToSend += tagDecoder[0].V;
 //    dataToSend += "\t" ;
 
-    /*
+    /* Flinders Toggles
     // Slider and Toggle Values
     for (int i=0; i<sliderDecoder.length; i++) {
       dataToSend += sliderDecoder[i].code;
@@ -172,7 +203,7 @@ void sendData() {
     //udp.send( dataToSend, "18.85.55.241", 6152 );
     udp.send( dataToSend, "localhost", 6152 );
     
-    saveStrings("data.txt", split(dataToSend, "\n"));
+    //saveStrings("data.txt", split(dataToSend, "\n"));
 
     /**
     * sending data via DDP (2016/01/04 Y.S.)

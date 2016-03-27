@@ -36,6 +36,14 @@ void sendData() {
     dataToSend += imageIndex;
     dataToSend += "\n" ;
     
+    // UMax and VMax Values
+    dataToSend += "gridExtents";
+    dataToSend += "\t" ;
+    dataToSend += tagDecoder[0].U;
+    dataToSend += "\t" ;
+    dataToSend += tagDecoder[0].V;
+    dataToSend += "\n" ;
+    
     if (enableToggles) {
       dataToSend += "dockID";
       dataToSend += "\t" ;
@@ -54,17 +62,17 @@ void sendData() {
       
       dataToSend += "toggle1";
       dataToSend += "\t" ;
-      dataToSend += sliderDecoder[1].code;
+      dataToSend += colorDecoder[0].id[0][0];
       dataToSend += "\n" ;
       
       dataToSend += "toggle2";
       dataToSend += "\t" ;
-      dataToSend += sliderDecoder[2].code;
+      dataToSend += colorDecoder[1].id[0][0];
       dataToSend += "\n" ;
       
       dataToSend += "toggle3";
       dataToSend += "\t" ;
-      dataToSend += sliderDecoder[3].code;
+      dataToSend += colorDecoder[2].id[0][0];
       dataToSend += "\n" ;
     }
     
@@ -103,14 +111,6 @@ void sendData() {
         }
       }
     }
-    
-    /*
-    // UMax and VMax Values
-    dataToSend += tagDecoder[0].U;
-    dataToSend += "\t" ;
-    dataToSend += tagDecoder[0].V;
-    dataToSend += "\t" ;
-    */
     
     /* Flinders Toggles
     // Slider and Toggle Values

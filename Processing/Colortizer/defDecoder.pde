@@ -5,6 +5,7 @@ boolean decode = true;
 
 TagDecoder[] tagDecoder;
 SliderDecoder[] sliderDecoder; // Object that translates slider colors into numbers
+ColorDecoder[] colorDecoder; // Object that translates Toggle color into 0 or 1
 
 void initDecoders() {
   
@@ -16,11 +17,13 @@ void initDecoders() {
     if (enableToggles) {
       tagDecoder[1] = new TagDecoder(buildingDef, rotationDef); // Programmable Building Dock
       
-      sliderDecoder = new SliderDecoder[4];
+      sliderDecoder = new SliderDecoder[1];
       sliderDecoder[0] = new SliderDecoder(0,1); // Slider 1
-      sliderDecoder[1] = new SliderDecoder(0,1); // Toggle 1
-      sliderDecoder[2] = new SliderDecoder(0,1); // Toggle 2
-      sliderDecoder[3] = new SliderDecoder(0,1); // Toggle 3
+      
+      colorDecoder = new ColorDecoder[3];
+      colorDecoder[0] = new ColorDecoder(); // Toggle 1
+      colorDecoder[1] = new ColorDecoder(); // Toggle 1
+      colorDecoder[2] = new ColorDecoder(); // Toggle 1
     }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
@@ -61,9 +64,9 @@ void updateDecoders() {
       sliderDecoder[0].decoder(scanGrid[2].getQuadCode());
       
       //Toggles (scanGrid should only have one row or 1 column to work as slider)
-      sliderDecoder[1].decoder(scanGrid[3].getQuadCode());
-      sliderDecoder[2].decoder(scanGrid[4].getQuadCode());
-      sliderDecoder[3].decoder(scanGrid[5].getQuadCode());
+      colorDecoder[0].decoder(scanGrid[3].getQuadCode());
+      colorDecoder[1].decoder(scanGrid[4].getQuadCode());
+      colorDecoder[2].decoder(scanGrid[5].getQuadCode());
     }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)

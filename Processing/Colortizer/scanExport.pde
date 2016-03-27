@@ -1,43 +1,12 @@
-/*
- * Incoming Port: 6669
- * Ougoing Port:  6152
- *
- * REPORT ALL CHANGES WITH DATE AND USER IN THIS AREA:
- * - 2016/01/04 Yasushi Connect to a meteor app via DDP and send
- * -
- * -
- */
-
-
 // import UDP library
 import hypermedia.net.*;
 UDP udp;  // define the UDP object
+String local_UDPAddress = "localhost";
+int local_UDPin = 6669;
+int local_UDPout = 6152;
 
 boolean busyImporting = false;
 boolean viaUDP = true;
-boolean UDPtoServer = false;
-
-// Karthik's Machine
-String UDPServer_IP = "104.131.179.31";
-int UDPServer_PORT = 33333;
-
-/*
-// CityScope Machine
-String UDPServer_IP = "cityscope.media.mit.edu";
-int UDPServer_PORT = 9998;
-*/
-
-/**
-* importing the DDP library and dependencies (2016/01/05 Y.S.)
-* 
-*/
-import com.google.gson.Gson; // you don't need this if your just using DDPclient
-import ddpclient.*;
-DDPClient ddp;
-Gson gson; // handy to have one gson converter...
-int[][] state_data; // because this object is ment to be json-ized
-boolean enableDDP = false;
-String DDPAddress = "104.131.183.20";
 
 void startUDP(){
 
@@ -46,28 +15,10 @@ void startUDP(){
   }
 
   if (viaUDP) {
-    udp = new UDP( this, 6669 );
+    udp = new UDP( this, local_UDPin );
     //udp.log( true );     // <-- printout the connection activity
     udp.listen( true );
   }
-  
-  if (enableDDP) {
-    initDDP();
-  }
-}
-
-
-void initDDP() {
-/**
-  * DDP initiation (2016/01/04 Y.S.)
-  * 
-  * assuming that this function is called in init 
-  * initiating will automatically connect
-  */
-  //ddp = new DDPClient(this,"localhost",3000);
-  ddp = new DDPClient(this,DDPAddress,80);
-  gson = new Gson();
-  ddp.setProcessing_delay(100);
 }
 
 void sendData() {
@@ -160,13 +111,15 @@ void sendData() {
         }
       }
     }
-
-//    // UMax and VMax Values
-//    dataToSend += tagDecoder[0].U;
-//    dataToSend += "\t" ;
-//    dataToSend += tagDecoder[0].V;
-//    dataToSend += "\t" ;
-
+    
+    /*
+    // UMax and VMax Values
+    dataToSend += tagDecoder[0].U;
+    dataToSend += "\t" ;
+    dataToSend += tagDecoder[0].V;
+    dataToSend += "\t" ;
+    */
+    
     /* Flinders Toggles
     // Slider and Toggle Values
     for (int i=0; i<sliderDecoder.length; i++) {
@@ -198,23 +151,22 @@ void sendData() {
     dataToSend += vizWidth;
     dataToSend += "\n" ;
     */
-
-    //saveStrings("data.txt", split(dataToSend, "\n"));
-    //udp.send( dataToSend, "18.85.55.241", 6152 );
-    udp.send( dataToSend, "localhost", 6152 );
     
-    //saveStrings("data.txt", split(dataToSend, "\n"));
-
-    /**
-    * sending data via DDP (2016/01/04 Y.S.)
-    */
-    if(enableDDP)  ddp.call("sendCapture",new Object[]{gson.toJson(state_data)});
-
+    // Saves dataToSend as a text file for Debugging
+    saveStrings("data.txt", split(dataToSend, "\n"));
+    
+    // Sends dataToSend to local host via UDP
+    udp.send( dataToSend, local_UDPAddress, local_UDPout );
+    
+    // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer) {
       if (millis() % 1000 <=150) udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
     }
     
-    //println("update received");
+    // sending data via DDP (2016/01/04 Y.S.) "once in a while"
+    if(enableDDP) {
+      if (millis() % 1000 <=150) ddp.call("sendCapture",new Object[]{gson.toJson(state_data)});
+    }
 
   } else {
     //println("no update received");

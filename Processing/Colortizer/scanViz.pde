@@ -194,21 +194,21 @@ public void printHelp1() {
   translate(400, 0);
   text("KeyCodes:", 0, 1.5*tsize);
   text("Press '0' to select camera polygon by clicking corners", 0, 3.5*tsize);
-  text("Press 'F' to hide/show HSBRGB frequencies (improves framerate)", 0, 5*tsize);
-  text("Press 'M' to switch between real/false color modes", 0, 6.5*tsize);
-  text("Press 'I' to hide/show color grid", 0, 8*tsize);
-  text("Press 'Z' for zoomed display", 0, 9.5*tsize);
-  text("Press 'O' to hide/show grid cell containers", 0, 11*tsize);
-  text("Press 'T' to change selected scanGrid", 0, 12.5*tsize);
+  text("Press 'f' to hide/show HSBRGB frequencies (improves framerate)", 0, 5*tsize);
+  text("Press 'm' to switch between real/false color modes", 0, 6.5*tsize);
+  text("Press 'i' to hide/show color grid", 0, 8*tsize);
+  text("Press 'z' for zoomed display", 0, 9.5*tsize);
+  text("Press 'o' to hide/show grid cell containers", 0, 11*tsize);
+  text("Press 't' to change selected scanGrid", 0, 12.5*tsize);
   translate(400, 0);
-  text("Press 'C/L' to save/load corner locations", 0, 2*tsize);
+  text("Press 'c/l' to save/load corner locations", 0, 2*tsize);
   text("Press '-/=' to save/load reference colors", 0, 8*tsize);
-  text("Press 'B/V' to select/set reference color", 0, 6.5*tsize);
-  text("Press 'A/S/D/W' or click to move reference color cursor", 0, 3.5*tsize);
+  text("Press 'b/v' to select/set reference color", 0, 6.5*tsize);
+  text("Press 'a/s/d/w' or click to move reference color cursor", 0, 3.5*tsize);
   text("Press SPACEBAR to temporarily hold a cursor's HSBRGB values for comparison", 0, 5*tsize);
-  text("Press 'U' to pause/unpause color detection", 0, 9.5*tsize);
-  text("Press 'Q/E' to save/load grid settings", 0, 11*tsize);
-  text("Press 'Y' to change selected plane of distortion", 0, 12.5*tsize);
+  text("Press 'u' to pause/unpause color detection", 0, 9.5*tsize);
+  text("Press 'q/e' to save/load grid settings", 0, 11*tsize);
+  text("Press 'y' to change selected plane of distortion", 0, 12.5*tsize);
   translate(-800, 0);
 }
 
@@ -220,7 +220,7 @@ public void printHelp2() {
   text("Press ''' to select BOTTOM RIGHT corner", 0, 6.5*tsize);
   text("Press ';' to select BOTTOM LEFT corner", 0, 8*tsize);
   text("Press arrow keys or click to set corner position", 0, 9.5*tsize);
-  text("Press 'L/C' to load/save corner positions", 0, 11*tsize);
+  text("Press 'l/c' to load/save corner positions", 0, 11*tsize);
   translate(-margLeft, -150);
 }
 
@@ -467,7 +467,7 @@ void drawIDMode(int IDMode) {
 void drawVRMode() {
   fill(#FFFFFF);
   textAlign(LEFT);
-  text("Export to IPs for Karthik's VR Prototype: " + UDPtoServer + " [Press 'V' to toggle on/off]", 
+  text("Export to UDPServer (" + UDPServer_IP + " at port " +UDPServer_PORT + "): " + UDPtoServer + " [Press 'SHIFT+V' to toggle on/off]", 
        24+scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadWidth()+10, -6.0*tsize);
 }
 
@@ -477,7 +477,7 @@ void drawVRMode() {
 void drawDDPMode(){
   fill(#FFFFFF);
   textAlign(LEFT);
-  text("Export to Web App ("+DDPAddress+"): "+enableDDP + "[Press 'N'] to toggle.",
+  text("Export to Web App ("+DDPAddress + " at port " +DDPPort + "): "+enableDDP + " [Press 'SHIFT+N' to toggle on/off]",
     24+scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadWidth()+10, -7.5*tsize);
   
 }

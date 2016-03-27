@@ -63,6 +63,10 @@ void setup() {
     // Initiation of "UMIClient" Tab Items
     initServer();
   }
+  
+  if (enableDDP) {
+    initDDP();
+  }
 }
 
 void draw() {

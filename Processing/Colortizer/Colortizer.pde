@@ -31,7 +31,10 @@ Step 5: Run application
 
 */
 
+boolean enableToggles = false;
+
 // Change this number to change which Area is scanned (i.e. 0, 1, or 2)
+// Only used when drawing feeds from multiple webcams, really
 int imageIndex = 0; //Selection of scanImage to start
 
 //Number of scan grids to be created on each warped image

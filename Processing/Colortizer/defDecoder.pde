@@ -50,16 +50,18 @@ void updateDecoders() {
     //Decodes grid that we will assign color codes
     tagDecoder[0].decoder(scanGrid[numGAforLoop[imageIndex] + gridIndex].getQuadCode(), scanGrid[numGAforLoop[imageIndex] + gridIndex].IDMode);
     
-    //Decodes Programmable Building Dock
-    tagDecoder[1].decoder(scanGrid[1].getQuadCode(), scanGrid[1].IDMode);
-    
-    // Slider
-    sliderDecoder[0].decoder(scanGrid[2].getQuadCode());
-    
-    //Toggles (scanGrid should only have one row or 1 column to work as slider)
-    sliderDecoder[1].decoder(scanGrid[3].getQuadCode());
-    sliderDecoder[2].decoder(scanGrid[4].getQuadCode());
-    sliderDecoder[3].decoder(scanGrid[5].getQuadCode());
+    if (enableToggles) {
+      //Decodes Programmable Building Dock
+      tagDecoder[1].decoder(scanGrid[1].getQuadCode(), scanGrid[1].IDMode);
+      
+      // Slider
+      sliderDecoder[0].decoder(scanGrid[2].getQuadCode());
+      
+      //Toggles (scanGrid should only have one row or 1 column to work as slider)
+      sliderDecoder[1].decoder(scanGrid[3].getQuadCode());
+      sliderDecoder[2].decoder(scanGrid[4].getQuadCode());
+      sliderDecoder[3].decoder(scanGrid[5].getQuadCode());
+    }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
     

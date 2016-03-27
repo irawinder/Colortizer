@@ -66,8 +66,14 @@ void setupScan() {
   
   numGridAreas = new int[numGridAreasTSV.getColumnCount()];
   for (int i=0; i<numGridAreas.length; i++) {
-    numGridAreas[i] = numGridAreasTSV.getInt(0, i);
+    if (!enableToggles) {
+      numGridAreas[i] = 1;
+    } else {
+      numGridAreas[i] = numGridAreasTSV.getInt(0, i);
+    }
   }
+  
+  
   
   for(int i=0; i<exportOffsets.length; i++) {
     exportOffsets[i][0] = exportOffsetsTSV.getInt(i, 0);

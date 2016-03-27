@@ -153,7 +153,7 @@ void sendData() {
     */
     
     // Saves dataToSend as a text file for Debugging
-    saveStrings("data.txt", split(dataToSend, "\n"));
+    //saveStrings("data.txt", split(dataToSend, "\n"));
     
     // Sends dataToSend to local host via UDP
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
@@ -180,33 +180,35 @@ void ImportData(String inputStr[]) {
 
     String tempS = inputStr[i];
     String[] split = split(tempS, "\t");
-
-    // Sends commands to Rhino Server to run UMI functions
-    if (split.length == 1) {
-
-      switch(int(split[0])) {
-        case 1:
-          if (writer != null) { writer.println("resimulate"); }
-          break;
-        case 2:
-          if (writer != null) { writer.println("save"); }
-          break;
-        case 3:
-          if (writer != null) { writer.println("displaymode energy"); }
-          break;
-        case 4:
-          if (writer != null) { writer.println("displaymode walkability"); }
-          break;
-        case 5:
-          if (writer != null) { writer.println("displaymode daylighting"); }
-          break;
-        case 6:
-          if(useUMI) {
-            initServer();
-          }
-          break;
+    
+    if (useUMI) {
+      // Sends commands to Rhino Server to run UMI functions
+      if (split.length == 1) {
+  
+        switch(int(split[0])) {
+          case 1:
+            if (writer != null) { writer.println("resimulate"); }
+            break;
+          case 2:
+            if (writer != null) { writer.println("save"); }
+            break;
+          case 3:
+            if (writer != null) { writer.println("displaymode energy"); }
+            break;
+          case 4:
+            if (writer != null) { writer.println("displaymode walkability"); }
+            break;
+          case 5:
+            if (writer != null) { writer.println("displaymode daylighting"); }
+            break;
+          case 6:
+            if(useUMI) {
+              initServer();
+            }
+            break;
+        }
+        println(split[0]);
       }
-      println(split[0]);
     }
   }
 

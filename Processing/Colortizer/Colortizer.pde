@@ -31,10 +31,11 @@ Step 5: Run application
 
 */
 
+// Set this to false if you only need the grid information
 boolean enableToggles = true;
 
 // Change this number to change which Area is scanned (i.e. 0, 1, or 2)
-// Only used when drawing feeds from multiple webcams, really
+// Only used when you need feeds from multiple webcams, and each instance of colortizer is a different webcam
 int imageIndex = 0; //Selection of scanImage to start
 
 //Number of scan grids to be created on each warped image

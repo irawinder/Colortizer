@@ -12,13 +12,16 @@ void initDecoders() {
     
     tagDecoder = new TagDecoder[2];
     tagDecoder[0] = new TagDecoder(buildingDef, rotationDef); // main Patterned Scan Grid
-    tagDecoder[1] = new TagDecoder(buildingDef, rotationDef); // Programmable Building Dock
     
-    sliderDecoder = new SliderDecoder[4];
-    sliderDecoder[0] = new SliderDecoder(0,1); // Slider 1
-    sliderDecoder[1] = new SliderDecoder(0,1); // Toggle 1
-    sliderDecoder[2] = new SliderDecoder(0,1); // Toggle 2
-    sliderDecoder[3] = new SliderDecoder(0,1); // Toggle 3
+    if (enableToggles) {
+      tagDecoder[1] = new TagDecoder(buildingDef, rotationDef); // Programmable Building Dock
+      
+      sliderDecoder = new SliderDecoder[4];
+      sliderDecoder[0] = new SliderDecoder(0,1); // Slider 1
+      sliderDecoder[1] = new SliderDecoder(0,1); // Toggle 1
+      sliderDecoder[2] = new SliderDecoder(0,1); // Toggle 2
+      sliderDecoder[3] = new SliderDecoder(0,1); // Toggle 3
+    }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
     colorDecoder[1] = new ColorDecoder(); // reference color 1

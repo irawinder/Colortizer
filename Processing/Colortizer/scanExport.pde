@@ -81,6 +81,7 @@ void sendData() {
 
         // V Position
         dataToSend += v + exportOffsets[numGAforLoop[imageIndex]][1];
+        dataToSend += "\t" ;
         
 //        // U Position
 //        dataToSend += tagDecoder[0].U-u-1;
@@ -89,18 +90,9 @@ void sendData() {
 //        // V Position
 //        dataToSend += v;
 
-        ////// BEGIN Added March 3, 2015 by Ira Winder ///////
-
-        dataToSend += "\t" ;
-
         // Rotation
         dataToSend += tagDecoder[0].rotation[u][v];
-
-        ////// END Added March 3, 2015 by Ira Winder ///////
-
-        //if (u != tagDecoder[0].U-1 || v != tagDecoder[0].V-1) {
-          dataToSend += "\n" ;
-        //}
+        dataToSend += "\n" ;
 
         /**
         * storing data for web (2016/01/05 Y.S.)

@@ -211,8 +211,13 @@ void updateScan(Capture cam, int vizW, int vizH) {
   // Creates scanGrid
   if (update) {
     for (int i=0; i<numImages; i++) {
-      for (int j=0; j<numGridAreas[i]; j++) { 
-        scanGrid[numGAforLoop[i] + j].updatePatterns(scanImage[i]);
+      if (enableToggles) {
+        for (int j=0; j<numGridAreas[i]; j++) { 
+          scanGrid[numGAforLoop[i] + j].updatePatterns(scanImage[i]);
+        }
+      } else {
+        // Only updates the first scan grid associated with each distorted image
+        scanGrid[numGAforLoop[i]].updatePatterns(scanImage[i]);
       }
     }
   }

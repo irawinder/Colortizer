@@ -31,7 +31,8 @@ Step 5: Run application
 
 */
 
-// Set this to false if you only need the grid information
+// Set this to false if you only need NxN piece grid information
+// Set to true if you intend to make toggles and sliders
 boolean enableToggles = true;
 
 // Change this number to change which Area is scanned (i.e. 0, 1, or 2)
@@ -65,6 +66,7 @@ void setup() {
   }
   
   if (enableDDP) {
+    // Initialization of Yasushi's DDP Client
     initDDP();
   }
 }

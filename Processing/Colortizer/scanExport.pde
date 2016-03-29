@@ -44,6 +44,12 @@ void sendData() {
     dataToSend += tagDecoder[0].V;
     dataToSend += "\n" ;
     
+    // IDMax Value
+    dataToSend += "IDMax";
+    dataToSend += "\t" ;
+    dataToSend += scanGrid[numGAforLoop[imageIndex]].IDMode*8-1;
+    dataToSend += "\n" ;
+    
     if (enableToggles) {
       dataToSend += "dockID";
       dataToSend += "\t" ;

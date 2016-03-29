@@ -185,8 +185,8 @@ public void printTitle() {
   text("Applet for gridded, programmable color detection", 0, 7*tsize);
   
   text("Press '`' to connect/disconnect UMI Server", 0, 9.5*tsize);
-  text("Press 'G' to lock/unlock grid editing", 0, 11*tsize);
-  text("Press 'R' to change ID support (0, 8, 16, or 24 IDs)", 0, 12.5*tsize);
+  text("Press 'g' to lock/unlock grid editing", 0, 11*tsize);
+  text("Press 'r' to change ID support (0, 8, 16, or 24 IDs)", 0, 12.5*tsize);
   translate(-margLeft, 0);
 }
 

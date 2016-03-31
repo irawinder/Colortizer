@@ -8,6 +8,8 @@ int local_UDPout = 6152;
 boolean busyImporting = false;
 boolean viaUDP = true;
 
+String LOCAL_FRIENDLY_NAME = "COLORTIZER";
+
 void startUDP(){
 
   if (decode == false) {
@@ -29,6 +31,10 @@ void sendData() {
     * state_data
     */
     state_data=new int[0][0];
+    
+    // tag to denote that tag comes from colortizer
+    dataToSend += LOCAL_FRIENDLY_NAME;
+    dataToSend += "\n" ;
     
     // Scan Grid Location (for referencing grid offset file)
     dataToSend += "gridIndex";

@@ -1,0 +1,155 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'signing'
+apply plugin: 'maven'
+
+group = 'com.keysolutions'
+version = '1.0.0.3'
+// compile for JDK 1.5 for maximum backwards compatibility
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+
+
+// get rid of bootclasspath warning by setting it
+def env = System.getenv()
+def bootClasspathStr = env['JAVA_HOME'] + "/jre/lib/rt.jar"
+println env['JAVA_HOME']+'/jre/lib/rt.jar' 
+project.tasks.withType(AbstractCompile, { AbstractCompile ac ->
+    ac.options.bootClasspath = bootClasspathStr // options is always there but not defined on AbstractCompile so going to hit it anyway
+})
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Java DDP Client Library', 'Implementation-Version': version
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+ 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.apache.commons:commons-collections4:[4.0,5.0)"
+    testCompile "junit:junit:[4,5)"
+    compile "org.java-websocket:Java-WebSocket:1.3.0"
+    compile "com.google.code.gson:gson:2.3.1"
+    compile "org.slf4j:slf4j-api:[1.7,1.8)"
+    compile "org.slf4j:slf4j-simple:[1.7,1.8)"
+    compile "com.nimbusds:srp6a:[1.5,1.6)"
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+ 
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+        
+        pom.project {
+            name 'JavaDDPClient'
+            packaging 'jar'
+            description 'JavaDDPClient is a Java library for the Meteor.js framework DDP websocket protocol'
+            url 'https://github.com/kenyee/java-ddp-client'
+ 
+            scm {
+                url 'scm:git@github.com:kenyee/java-ddp-client.git'
+                connection 'scm:git@github.com:kenyee/java-ddp-client.git'
+                developerConnection 'scm:git@github.com:kenyee/java-ddp-client.git'
+            }
+ 
+            licenses {
+                license {
+                   name 'The Apache Software License, Version 2.0'
+                   url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                   distribution 'repo'
+                }
+            }
+ 
+            developers {
+                developer {
+                    id 'kenyee'
+                    name 'Ken Yee'
+                }
+            }
+        }
+    }
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+signing {
+    sign configurations.archives
+}
+
+// use this for testing pom.xml generation
+task writeNewPom << {
+    pom {
+        project {
+            inceptionYear '2013'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+        /* converts Gradle dynamic dependency syntax 
+        whenConfigured { generatedPom ->
+          generatedPom.dependencies.each { mavenDep ->
+            if (isDynamic(mavenDep)) {
+              mavenDep.version = '[' + mavenDep.version[0..-2] + ',)'
+            }
+          }
+        }
+        */
+
+    }.writeTo("$buildDir/newpom.xml")
+}
+
+/**
+  * Locks a Maven dependency into a specific version.
+  * @param dep the dependency
+*/
+void lockDependency(def dep) {
+  if (isDynamic(dep)) {
+    project.logger.info("Lockin $dep into a specific revision")
+    Configuration conf = project.configurations.findByName(dep.scope)
+    if (conf == null) {
+      throw new Exception("Unable to lock $dep due to missing configuration, aborting as dependency tree will be unstable")
+    } else {
+      def matches = conf.resolvedConfiguration.resolvedArtifacts.findAll {
+        it.moduleVersion.id.group.equals(dep.groupId) && it.moduleVersion.id.name.equals(dep.artifactId) && (it.classifier == null || (it.classifier != null && it.classifier.equals(dep.classifier)))
+      }
+      if (matches.size() > 1)
+        throw new Exception("Unable to lock $dep due to multiple resolved dependencies, aborting as dependency tree will be unstable")
+      else
+        matches.each { dep.version = it.moduleVersion.id.version }
+      }
+    }
+  }
+/*
+ * Checks for whether a dependency is dynamic
+*/
+boolean isDynamic(def dep) {
+  return dep.version.any { it == '[' || it == ']' || it == '(' || it == ')' || it == '+' }
+}

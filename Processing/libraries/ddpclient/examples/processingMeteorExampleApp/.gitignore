@@ -1,0 +1,8 @@
+# sensitive server info use template.mup.json as template
+mup.json
+
+*.iws
+
+.meteor/local/*
+**/.idea/workspace.xml
+**/.idea/tasks.xml

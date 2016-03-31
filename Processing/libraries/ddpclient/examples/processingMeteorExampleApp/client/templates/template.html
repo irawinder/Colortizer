@@ -1,0 +1,3 @@
+<template name="home"><header><h1>{{title}}</h1><hr/><form class="new-data"><input type="text" name="text" placeholder="text"/></form><p><button type="button" id="delete">delete all archive</button></p></header>{{#each data}}
+  {{>datum}}
+{{/each}}</template><template name="datum"><div><p>{{createdAt}}</p><p>{{origin}} - <strong>{{text}}</strong></p></div></template>

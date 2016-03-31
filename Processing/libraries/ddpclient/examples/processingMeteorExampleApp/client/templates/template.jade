@@ -1,0 +1,24 @@
+//-
+    templates
+
+template(name="home")
+    header
+        h1 {{title}}
+        hr
+        form(class="new-data")
+            input(type="text" name="text" placeholder="text")
+        p
+            button(type="button" id="delete") delete all archive
+
+    | {{#each data}}
+    |   {{>datum}}
+    | {{/each}}
+
+
+template(name="datum")
+    div
+        p {{createdAt}}
+        p {{origin}} - #[strong {{text}}]
+
+
+

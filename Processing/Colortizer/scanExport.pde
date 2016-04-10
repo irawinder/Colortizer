@@ -10,6 +10,8 @@ boolean viaUDP = true;
 
 String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
+String udpDataPrevious = ""; //YZ
+
 
 void startUDP(){
 
@@ -176,8 +178,9 @@ void sendData() {
     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     
-    if (frameCount % 30 == 0) {
+    if (frameCount % 30 == 0 && dataToSend != udpDataPrevious) {
       udp.send( dataToSend, "localhost", 7001 ); //YZ
+      udpDataPrevious = dataToSend;
     }
     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////

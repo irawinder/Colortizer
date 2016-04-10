@@ -178,7 +178,7 @@ void sendData() {
     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     
-    if (frameCount % 30 == 0 && dataToSend != udpDataPrevious) {
+    if (frameCount % 20 == 0 && dataToSend != udpDataPrevious) {
       udp.send( dataToSend, "localhost", 7001 ); //YZ
       udpDataPrevious = dataToSend;
     }

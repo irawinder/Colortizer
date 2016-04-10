@@ -10,6 +10,7 @@ boolean viaUDP = true;
 
 String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
+
 void startUDP(){
 
   if (decode == false) {
@@ -171,6 +172,17 @@ void sendData() {
     if(enableDDP) {
       if (millis() % 1000 <=150) ddp.call("sendCapture",new Object[]{gson.toJson(state_data)});
     }
+    
+    
+    //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
+    
+    if (frameCount % 30 == 0) {
+      udp.send( dataToSend, "localhost", 7001 ); //YZ
+    }
+    
+    //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
+    
+    
 
   } else {
     //println("no update received");

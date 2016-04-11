@@ -12,6 +12,9 @@ String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
 String udpDataPrevious = ""; //YZ
 
+float [] density_values = { 0.0,0.0,0.0,0.0,0.0,0.0,0.0 };
+float floating_min = 10000;
+float floating_max = -10000;
 
 void startUDP(){
 
@@ -27,7 +30,7 @@ void startUDP(){
 }
 
 void sendData() {
-
+  
   if (viaUDP && updateReceived) {
     String dataToSend = "";
     /**
@@ -75,6 +78,25 @@ void sendData() {
       dataToSend += sliderDecoder[0].code;
       dataToSend += "\n" ;
       
+      //overwriting the tagdecoder[1].id[0][0]
+      //println(tagDecoder[1].id[0][0]);
+      
+      if(floating_min > sliderDecoder[0].code){
+        floating_min = sliderDecoder[0].code;
+      }
+      
+      if(floating_max < sliderDecoder[0].code){
+        floating_max = sliderDecoder[0].code;
+      }
+      
+         
+        float v= 1+((1-(sliderDecoder[0].code-floating_min) / (floating_max-floating_min))*29);
+      
+      if(tagDecoder[1].id[0][0] != -1){
+        density_values[tagDecoder[1].id[0][0]] = v;
+      }
+       
+      
       dataToSend += "toggle1";
       dataToSend += "\t" ;
       dataToSend += colorDecoder[0].id[0][0];
@@ -89,6 +111,17 @@ void sendData() {
       dataToSend += "\t" ;
       dataToSend += colorDecoder[2].id[0][0];
       dataToSend += "\n" ;
+      
+      // Added from here to 
+      //HACK
+      
+      dataToSend += round(density_values[0])+"";
+      for(int i=1;i<density_values.length;i++){
+        dataToSend += "\t" + round(density_values[i]);
+      }
+      dataToSend += "\n";
+      
+      
     }
     
     for (int u=0; u<tagDecoder[0].U; u++) {

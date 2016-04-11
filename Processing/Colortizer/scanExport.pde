@@ -13,6 +13,9 @@ String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 String udpDataPrevious = ""; //YZ
 
 float [] density_values = { 0.0,0.0,0.0,0.0,0.0,0.0,0.0 };
+int [] type_count = {0,0,0,0,0,0};
+float [] density_person = {0.01123,0.018181,0.0666667,0.0,0.0,0.0}; //
+float [] persons = {0,0,0}; // old,med,young 
 float floating_min = 10000;
 float floating_max = -10000;
 
@@ -89,8 +92,7 @@ void sendData() {
         floating_max = sliderDecoder[0].code;
       }
       
-         
-        float v= 1+((1-(sliderDecoder[0].code-floating_min) / (floating_max-floating_min))*29);
+      float v= 1+((1-(sliderDecoder[0].code-floating_min) / (floating_max-floating_min))*29);
       
       if(tagDecoder[1].id[0][0] != -1){
         density_values[tagDecoder[1].id[0][0]] = v;
@@ -112,16 +114,6 @@ void sendData() {
       dataToSend += colorDecoder[2].id[0][0];
       dataToSend += "\n" ;
       
-      // Added from here to 
-      //HACK
-      
-      dataToSend += round(density_values[0])+"";
-      for(int i=1;i<density_values.length;i++){
-        dataToSend += "\t" + round(density_values[i]);
-      }
-      dataToSend += "\n";
-      
-      
     }
     
     for (int u=0; u<tagDecoder[0].U; u++) {
@@ -130,6 +122,11 @@ void sendData() {
         // Object ID
         dataToSend += tagDecoder[0].id[u][v] ;
         dataToSend += "\t" ;
+        
+       
+        // type counting
+        if(tagDecoder[0].id[u][v] != -1 && tagDecoder[0].id[u][v] < 6)
+          type_count[tagDecoder[0].id[u][v]] ++;
 
         // U Position
         dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0];
@@ -159,6 +156,29 @@ void sendData() {
         }
       }
     }
+    
+    
+     // Added from here to 
+     //HACK
+      dataToSend += round(density_values[0])+"";
+      for(int i=1;i<density_values.length;i++){
+        dataToSend += "\t" + round(density_values[i]);
+      }
+      dataToSend += "\n";
+      
+    for(int i=0;i<3;i++){  
+      int floors = round(density_values[i]) * type_count[i]; // floor num
+      float area = floors * 62.5 * 62.5 * 0.25; //sqm
+      persons[i] = area * density_person[i]; //float num
+    }
+    
+    int mid_old = int(persons[0]+persons[1]/2);
+    int young = int(persons[2]);
+    
+    dataToSend += mid_old+"\t"; //old
+    dataToSend += mid_old+"\t"; // mid
+    dataToSend += young+"\t"; //young
+    dataToSend += "\n";
     
     /* Flinders Toggles
     // Slider and Toggle Values

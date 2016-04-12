@@ -12,10 +12,10 @@ String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
 String udpDataPrevious = ""; //YZ
 
-float [] density_values = { 0.0,0.0,0.0,0.0,0.0,0.0,0.0 };
-int [] type_count = {0,0,0,0,0,0};
-float [] density_person = {0.01123,0.018181,0.0666667,0.0,0.0,0.0}; //
-float [] persons = {0,0,0}; // old,med,young 
+float [] density_values = { 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0 };
+int [] type_count = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+float [] density_person = {0.01123,0.018181,0.0666667,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; //
+float [] persons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // old,med,young 
 float floating_min = 10000;
 float floating_max = -10000;
 

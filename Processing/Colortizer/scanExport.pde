@@ -12,10 +12,10 @@ String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
 String udpDataPrevious = ""; //YZ
 
-float [] density_values = { 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0 };
-int [] type_count = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-float [] density_person = {0.01123,0.018181,0.0666667,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; //
-float [] persons = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // old,med,young 
+float [] density_values = new float[6];
+int [] type_count = new int[6];
+float [] density_person = {0.01123,0.018181,0.0666667}; //
+float [] persons = new float[3]; // old,med,young 
 float floating_min = 10000;
 float floating_max = -10000;
 
@@ -92,13 +92,15 @@ void sendData() {
         floating_max = sliderDecoder[0].code;
       }
       
+      //
+      // update value from slider Y.S.
+      //
       float v= 1+((1-(sliderDecoder[0].code-floating_min) / (floating_max-floating_min))*29);
       
-      if(tagDecoder[1].id[0][0] != -1){
+      if(tagDecoder[1].id[0][0] != -1 && tagDecoder[1].id[0][0] < 6){
         density_values[tagDecoder[1].id[0][0]] = v;
       }
        
-      
       dataToSend += "toggle1";
       dataToSend += "\t" ;
       dataToSend += colorDecoder[0].id[0][0];
@@ -161,7 +163,7 @@ void sendData() {
      // Added from here to 
      //HACK
       dataToSend += round(density_values[0])+"";
-      for(int i=1;i<density_values.length;i++){
+      for(int i=1;i<6;i++){ //limiting to 6 values
         dataToSend += "\t" + round(density_values[i]);
       }
       dataToSend += "\n";
@@ -222,13 +224,7 @@ void sendData() {
     if(UDPtoServer) {
       if (millis() % 1000 <=150) udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
     }
-    
-    // sending data via DDP (2016/01/04 Y.S.) "once in a while"
-    if(enableDDP) {
-      if (millis() % 1000 <=150) ddp.call("sendCapture",new Object[]{gson.toJson(state_data)});
-    }
-    
-    
+     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     
     if (frameCount % 20 == 0 && dataToSend != udpDataPrevious) {

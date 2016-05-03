@@ -1,14 +1,20 @@
 // import UDP library
 import hypermedia.net.*;
+import com.google.gson.Gson;  // Json
 UDP udp;  // define the UDP object
 String local_UDPAddress = "localhost";
 int local_UDPin = 6669;
 int local_UDPout = 6152;
 
+
+JSONObject json_data = new JSONObject();
+
 boolean busyImporting = false;
 boolean viaUDP = true;
 
 String LOCAL_FRIENDLY_NAME = "COLORTIZER";
+
+//json_data.setString("local_friendly_name","COLORTIZER");
 
 String udpDataPrevious = ""; //YZ
 
@@ -50,6 +56,7 @@ void sendData() {
     dataToSend += "\t" ;
     dataToSend += imageIndex;
     dataToSend += "\n" ;
+    json_data.setInt("gridIndex",imageIndex);
     
     // UMax and VMax Values
     dataToSend += "gridExtents";
@@ -58,31 +65,38 @@ void sendData() {
     dataToSend += "\t" ;
     dataToSend += tagDecoder[0].V;
     dataToSend += "\n" ;
+    JSONObject grid_def = new JSONObject();
+    grid_def.setInt("u",tagDecoder[0].U);
+    grid_def.setInt("v",tagDecoder[0].V);
+
+    json_data.setJSONObject("gridExtents",grid_def);
+    
     
     // IDMax Value
     dataToSend += "IDMax";
     dataToSend += "\t" ;
     dataToSend += scanGrid[numGAforLoop[imageIndex]].IDMode*8-1;
     dataToSend += "\n" ;
+    json_data.setInt("IDMax",scanGrid[numGAforLoop[imageIndex]].IDMode*8-1);
     
     if (enableToggles) {
       dataToSend += "dockID";
       dataToSend += "\t" ;
       dataToSend += tagDecoder[1].id[0][0];
       dataToSend += "\n" ;
+      json_data.setInt("dockID",tagDecoder[1].id[0][0]);
       
       dataToSend += "dockRotation";
       dataToSend += "\t" ;
       dataToSend += tagDecoder[1].rotation[0][0];
       dataToSend += "\n" ;
+      json_data.setInt("dockRotation",tagDecoder[1].rotation[0][0]);
       
       dataToSend += "slider1";
       dataToSend += "\t" ;
       dataToSend += sliderDecoder[0].code;
       dataToSend += "\n" ;
-      
-      //overwriting the tagdecoder[1].id[0][0]
-      //println(tagDecoder[1].id[0][0]);
+      json_data.setFloat("slider1",sliderDecoder[0].code);
       
       if(floating_min > sliderDecoder[0].code){
         floating_min = sliderDecoder[0].code;
@@ -100,32 +114,27 @@ void sendData() {
       if(tagDecoder[1].id[0][0] != -1 && tagDecoder[1].id[0][0] < 6){
         density_values[tagDecoder[1].id[0][0]] = v;
       }
-       
-      dataToSend += "toggle1";
-      dataToSend += "\t" ;
-      dataToSend += colorDecoder[0].id[0][0];
-      dataToSend += "\n" ;
       
-      dataToSend += "toggle2";
-      dataToSend += "\t" ;
-      dataToSend += colorDecoder[1].id[0][0];
-      dataToSend += "\n" ;
-      
-      dataToSend += "toggle3";
-      dataToSend += "\t" ;
-      dataToSend += colorDecoder[2].id[0][0];
-      dataToSend += "\n" ;
+      for(int i=0;i<3;i++){
+        dataToSend += "toggle"+(i+1);
+        dataToSend += "\t";
+        dataToSend += colorDecoder[i].id[0][0];
+        dataToSend += "\n";
+        json_data.setInt("toggle"+(i+1),colorDecoder[i].id[0][0]);
+      }
       
     }
     
+    JSONArray objects = new JSONArray();
+    JSONObject temp = new JSONObject();
     for (int u=0; u<tagDecoder[0].U; u++) {
       for (int v=0; v<tagDecoder[0].V; v++) {
-
+        
         // Object ID
         dataToSend += tagDecoder[0].id[u][v] ;
         dataToSend += "\t" ;
+        temp.setInt("id",tagDecoder[0].id[u][v]);
         
-       
         // type counting
         if(tagDecoder[0].id[u][v] != -1 && tagDecoder[0].id[u][v] < 6)
           type_count[tagDecoder[0].id[u][v]] ++;
@@ -133,35 +142,37 @@ void sendData() {
         // U Position
         dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0];
         dataToSend += "\t" ;
+        temp.setInt("u",tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0]);
 
         // V Position
         dataToSend += v + exportOffsets[numGAforLoop[imageIndex]][1];
         dataToSend += "\t" ;
-        
-//        // U Position
-//        dataToSend += tagDecoder[0].U-u-1;
-//        dataToSend += "\t" ;
-//
-//        // V Position
-//        dataToSend += v;
+        temp.setInt("v",exportOffsets[numGAforLoop[imageIndex]][1]);
 
         // Rotation
         dataToSend += tagDecoder[0].rotation[u][v];
         dataToSend += "\n" ;
-
-        /**
-        * storing data for web (2016/01/05 Y.S.)
-        * simplified the data for the sake of example
-        */
-        if(enableDDP){
-          state_data = (int[][])append(state_data,new int[]{tagDecoder[0].id[u][v],tagDecoder[0].rotation[u][v]});
-        }
+        temp.setInt("r",tagDecoder[0].rotation[u][v]);
+        
+        objects.setJSONObject(u*tagDecoder[0].V+v,temp);
+        
       }
     }
     
+    json_data.setJSONArray("objects",objects);
     
      // Added from here to 
      //HACK
+     
+     JSONArray densities = new JSONArray();
+     
+     for(int i=0;i<6;i++){
+       densities.setFloat(i,round(density_values[i]));
+     }
+     
+     json_data.setJSONArray("density_values",densities);
+     
+     
       dataToSend += round(density_values[0])+"";
       for(int i=1;i<6;i++){ //limiting to 6 values
         dataToSend += "\t" + round(density_values[i]);
@@ -177,42 +188,20 @@ void sendData() {
     int mid_old = int(persons[0]+persons[1]/2);
     int young = int(persons[2]);
     
+    json_data.setFloat("old",mid_old);
+    json_data.setFloat("mid",mid_old);
+    json_data.setFloat("young",mid_old);
+    
+    JSONObject population = new JSONObject();
+    population.setInt("old",mid_old);
+    population.setInt("mid",mid_old);
+    population.setInt("young",young);
+    
+    
     dataToSend += mid_old+"\t"; //old
     dataToSend += mid_old+"\t"; // mid
     dataToSend += young+"\t"; //young
     dataToSend += "\n";
-    
-    /* Flinders Toggles
-    // Slider and Toggle Values
-    for (int i=0; i<sliderDecoder.length; i++) {
-      dataToSend += sliderDecoder[i].code;
-      if (i != sliderDecoder.length-1) {
-        dataToSend += "\t";
-      } else {
-        dataToSend += "\n";
-      }
-    }
-
-
-    // Slider and Toggle Locations
-    for (int i=0; i<numGridAreas[0]; i++) {
-      dataToSend += gridLocations.getInt(0, 0 + i*4);
-      dataToSend += "\t" ;
-      dataToSend += gridLocations.getInt(0, 1 + i*4);
-      dataToSend += "\t" ;
-      dataToSend += gridLocations.getInt(0, 2 + i*4);
-      dataToSend += "\t" ;
-      dataToSend += gridLocations.getInt(0, 3 + i*4);
-      dataToSend += "\n";
-    }
-
-
-    // Slider and Toggle Canvas Dimensions
-    dataToSend += vizRatio;
-    dataToSend += "\t" ;
-    dataToSend += vizWidth;
-    dataToSend += "\n" ;
-    */
     
     // Saves dataToSend as a text file for Debugging
     //saveStrings("data.txt", split(dataToSend, "\n"));
@@ -220,9 +209,13 @@ void sendData() {
     // Sends dataToSend to local host via UDP
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
+    println(json_data);
+    //saveJSONObject(json_data,"test.json");
+    
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer) {
       if (millis() % 1000 <=150) udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
+      //if (millis() % 1000 <=150) udp.send( json_data, UDPServer_IP, UDPServer_PORT );
     }
      
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////

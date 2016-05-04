@@ -9,15 +9,15 @@
 
 boolean UDPtoServer = false;
 
-// Karthik's Machine
-String UDPServer_IP = "104.131.179.31";
-int UDPServer_PORT = 33333;
+//// Karthik's Machine
+//String UDPServer_IP = "104.131.179.31";
+//int UDPServer_PORT = 33333;
 
-/*
+
 // CityScope Machine
 String UDPServer_IP = "cityscope.media.mit.edu";
 int UDPServer_PORT = 9998;
-*/
+
 
 // <--- END UDP to External Server --->
 

@@ -11,6 +11,7 @@ boolean viaUDP = true;
 String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
 String udpDataPrevious = ""; //YZ
+double udpDataLastTime = 0;
 
 float [] density_values = new float[6];
 int [] type_count = new int[6];
@@ -221,8 +222,10 @@ void sendData() {
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
     // Sends dataToSend to external host via UDP "once in a while"
-    if(UDPtoServer) {
-      if (millis() % 1000 <=150) udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
+    if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
+      udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
+      udpDataLastTime = millis();
+      //println("data was send through UDP");
     }
      
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////

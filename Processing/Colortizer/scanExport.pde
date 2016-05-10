@@ -117,6 +117,11 @@ void sendData() {
       dataToSend += colorDecoder[2].id[0][0];
       dataToSend += "\n" ;
       
+      dataToSend += "toggle4";
+      dataToSend += "\t" ;
+      dataToSend += colorDecoder[3].id[0][0];
+      dataToSend += "\n" ;
+      
     }
     
     for (int u=0; u<tagDecoder[0].U; u++) {

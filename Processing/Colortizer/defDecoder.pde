@@ -20,10 +20,11 @@ void initDecoders() {
       sliderDecoder = new SliderDecoder[1];
       sliderDecoder[0] = new SliderDecoder(0,1); // Slider 1
       
-      colorDecoder = new ColorDecoder[3];
+      colorDecoder = new ColorDecoder[4];
       colorDecoder[0] = new ColorDecoder(); // Toggle 1
-      colorDecoder[1] = new ColorDecoder(); // Toggle 1
-      colorDecoder[2] = new ColorDecoder(); // Toggle 1
+      colorDecoder[1] = new ColorDecoder(); // Toggle 2
+      colorDecoder[2] = new ColorDecoder(); // Toggle 3
+      colorDecoder[3] = new ColorDecoder(); // Toggle 4
     }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)
@@ -67,6 +68,7 @@ void updateDecoders() {
       colorDecoder[0].decoder(scanGrid[3].getQuadCode());
       colorDecoder[1].decoder(scanGrid[4].getQuadCode());
       colorDecoder[2].decoder(scanGrid[5].getQuadCode());
+      colorDecoder[3].decoder(scanGrid[6].getQuadCode());
     }
     
     /* Toggles and Sliders for Flinders Demo (CityScope Mark I!)

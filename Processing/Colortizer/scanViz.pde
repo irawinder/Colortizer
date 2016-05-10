@@ -746,6 +746,22 @@ void keyPressed() {
       scanDelay = delay;
       nudgeUV(1,0);
       break;
+//    case 'R':
+//      scanDelay = delay;
+//      nudgeWX(0,1);
+//      break;
+//    case 'F':
+//      scanDelay = delay;
+//      nudgeWX(0,-1);
+//      break;
+//    case 'D':
+//      scanDelay = delay;
+//      nudgeWX(-1,0);
+//      break;
+//    case 'G':
+//      scanDelay = delay;
+//      nudgeWX(1,0);
+//      break;
     case '<':
       scanDelay = delay;
       nudgeBase(-1);

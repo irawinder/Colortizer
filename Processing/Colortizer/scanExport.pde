@@ -224,10 +224,23 @@ void sendData() {
     //println(json_data);
     //saveJSONObject(json_data,"test.json");
     
+    // formatting json structure
+    JSONObject json_table = new JSONObject();
+    json_table.setJSONObject("data",json_data);
+    json_table.setInt("id",1);
+    json_table.setString("opcode","init");
+
+    JSONArray json_packets = new JSONArray();
+    json_packets.setJSONObject(0,json_table);
+
+    JSONObject json_all = new JSONObject();
+    json_all.setJSONArray("packets",json_packets);
+    //saveJSONObject(json_all,"all.json");
+
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
       udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
-      //udp.send(json_data, UDPServer_IP,UDPServer_PORT);
+      //udp.send(json_all, UDPServer_IP,UDPServer_PORT);
       udpDataLastTime = millis();
       //println("data was send through UDP");
     }

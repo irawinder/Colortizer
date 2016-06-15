@@ -14,8 +14,6 @@ boolean viaUDP = true;
 
 String LOCAL_FRIENDLY_NAME = "COLORTIZER";
 
-//json_data.setString("local_friendly_name","COLORTIZER");
-
 String udpDataPrevious = ""; //YZ
 double udpDataLastTime = 0;
 
@@ -129,15 +127,16 @@ void sendData() {
     }
     
     JSONArray json_grid = new JSONArray();
-    JSONObject temp = new JSONObject();
+    JSONObject temp;
     int object_cnt = 0;
     for (int u=0; u<tagDecoder[0].U; u++) {
       for (int v=0; v<tagDecoder[0].V; v++) {
         
+        temp = new JSONObject();
+        
         // Object ID
         dataToSend += tagDecoder[0].id[u][v] ;
         dataToSend += "\t" ;
-        temp.setInt("type",tagDecoder[0].id[u][v]);
         
         // type counting
         if(tagDecoder[0].id[u][v] != -1 && tagDecoder[0].id[u][v] < 6)
@@ -146,19 +145,23 @@ void sendData() {
         // U Position
         dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0];
         dataToSend += "\t" ;
-        temp.setInt("x",tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0]);
-
+        
         // V Position
         dataToSend += v + exportOffsets[numGAforLoop[imageIndex]][1];
         dataToSend += "\t" ;
-        temp.setInt("y",exportOffsets[numGAforLoop[imageIndex]][1]);
 
         // Rotation
         dataToSend += tagDecoder[0].rotation[u][v];
         dataToSend += "\n" ;
-        temp.setInt("rot",tagDecoder[0].rotation[u][v]);
+                
+        //
+        // ** JSON **
+        //
+        temp.setInt("type",tagDecoder[0].id[u][v]);
+        temp.setInt("x",(tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0]));
+        temp.setInt("y",(v + exportOffsets[numGAforLoop[imageIndex]][1]));
+        temp.setInt("rot",(tagDecoder[0].rotation[u][v]));
         
-        //json_grid.setJSONObject(u*tagDecoder[0].V+v,temp);
         json_grid.setJSONObject(object_cnt,temp);
         object_cnt++;
         
@@ -166,6 +169,7 @@ void sendData() {
     }
     
     json_data.setJSONArray("grid",json_grid);
+    //saveJSONArray(json_grid,"grid.json");
     
      // Added from here to 
      // HACK

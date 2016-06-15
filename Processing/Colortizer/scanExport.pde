@@ -225,13 +225,13 @@ void sendData() {
     json.setInt("id",1); // hardcode;
     json.setString("opcode","init");
     
-    saveJSONObject(json,"test.json");
+    //saveJSONObject(json,"test.json");
     
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
       udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
       //udp.send(json, UDPServer_IP,UDPServer_PORT);
-      saveJSONObject(json,"test.json");
+      //saveJSONObject(json,"test.json");
       udpDataLastTime = millis();
       //println("data was send through UDP");
     }

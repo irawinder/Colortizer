@@ -221,7 +221,7 @@ void sendData() {
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
 
-    println(json_data);
+    //println(json_data);
     //saveJSONObject(json_data,"test.json");
     
     // Sends dataToSend to external host via UDP "once in a while"

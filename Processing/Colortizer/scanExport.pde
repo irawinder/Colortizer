@@ -220,18 +220,14 @@ void sendData() {
     // Sends dataToSend to local host via UDP
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
-    JSONObject json = new JSONObject();
-    json.setJSONObject("data",json_data);
-    json.setInt("id",1); // hardcode;
-    json.setString("opcode","init");
-    
-    //saveJSONObject(json,"test.json");
+
+    println(json_data);
+    //saveJSONObject(json_data,"test.json");
     
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
       udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
-      //udp.send(json, UDPServer_IP,UDPServer_PORT);
-      //saveJSONObject(json,"test.json");
+      //udp.send(json_data, UDPServer_IP,UDPServer_PORT);
       udpDataLastTime = millis();
       //println("data was send through UDP");
     }

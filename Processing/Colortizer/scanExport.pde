@@ -48,6 +48,8 @@ void sendData() {
     */
     state_data=new int[0][0];
     
+    JSONObject json_objects = new JSONObject();
+    
     // tag to denote that tag comes from colortizer
     dataToSend += LOCAL_FRIENDLY_NAME;
     dataToSend += "\n" ;
@@ -57,7 +59,7 @@ void sendData() {
     dataToSend += "\t" ;
     dataToSend += imageIndex;
     dataToSend += "\n" ;
-    json_data.setInt("gridIndex",imageIndex);
+    json_objects.setInt("gridIndex",imageIndex);
     
     // UMax and VMax Values
     dataToSend += "gridExtents";
@@ -67,10 +69,10 @@ void sendData() {
     dataToSend += tagDecoder[0].V;
     dataToSend += "\n" ;
     JSONObject grid_def = new JSONObject();
-    grid_def.setInt("u",tagDecoder[0].U);
-    grid_def.setInt("v",tagDecoder[0].V);
+    grid_def.setInt("x",tagDecoder[0].U);
+    grid_def.setInt("y",tagDecoder[0].V);
 
-    json_data.setJSONObject("gridExtents",grid_def);
+    json_objects.setJSONObject("gridExtents",grid_def);
     
     
     // IDMax Value
@@ -78,26 +80,26 @@ void sendData() {
     dataToSend += "\t" ;
     dataToSend += scanGrid[numGAforLoop[imageIndex]].IDMode*8-1;
     dataToSend += "\n" ;
-    json_data.setInt("IDMax",scanGrid[numGAforLoop[imageIndex]].IDMode*8-1);
+    json_objects.setInt("IDMax",scanGrid[numGAforLoop[imageIndex]].IDMode*8-1);
     
     if (enableToggles) {
       dataToSend += "dockID";
       dataToSend += "\t" ;
       dataToSend += tagDecoder[1].id[0][0];
       dataToSend += "\n" ;
-      json_data.setInt("dockID",tagDecoder[1].id[0][0]);
+      json_objects.setInt("dockID",tagDecoder[1].id[0][0]);
       
       dataToSend += "dockRotation";
       dataToSend += "\t" ;
       dataToSend += tagDecoder[1].rotation[0][0];
       dataToSend += "\n" ;
-      json_data.setInt("dockRotation",tagDecoder[1].rotation[0][0]);
+      json_objects.setInt("dockRotation",tagDecoder[1].rotation[0][0]);
       
       dataToSend += "slider1";
       dataToSend += "\t" ;
       dataToSend += sliderDecoder[0].code;
       dataToSend += "\n" ;
-      json_data.setFloat("slider1",sliderDecoder[0].code);
+      json_objects.setFloat("slider1",sliderDecoder[0].code);
       
       if(floating_min > sliderDecoder[0].code){
         floating_min = sliderDecoder[0].code;
@@ -121,20 +123,21 @@ void sendData() {
         dataToSend += "\t";
         dataToSend += colorDecoder[i].id[0][0];
         dataToSend += "\n";
-        json_data.setInt("toggle"+(i+1),colorDecoder[i].id[0][0]);
+        json_objects.setInt("toggle"+(i+1),colorDecoder[i].id[0][0]);
       }
       
     }
     
-    JSONArray objects = new JSONArray();
+    JSONArray json_grid = new JSONArray();
     JSONObject temp = new JSONObject();
+    int object_cnt = 0;
     for (int u=0; u<tagDecoder[0].U; u++) {
       for (int v=0; v<tagDecoder[0].V; v++) {
         
         // Object ID
         dataToSend += tagDecoder[0].id[u][v] ;
         dataToSend += "\t" ;
-        temp.setInt("id",tagDecoder[0].id[u][v]);
+        temp.setInt("type",tagDecoder[0].id[u][v]);
         
         // type counting
         if(tagDecoder[0].id[u][v] != -1 && tagDecoder[0].id[u][v] < 6)
@@ -143,35 +146,37 @@ void sendData() {
         // U Position
         dataToSend += tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0];
         dataToSend += "\t" ;
-        temp.setInt("u",tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0]);
+        temp.setInt("x",tagDecoder[0].U-u-1 + exportOffsets[numGAforLoop[imageIndex]][0]);
 
         // V Position
         dataToSend += v + exportOffsets[numGAforLoop[imageIndex]][1];
         dataToSend += "\t" ;
-        temp.setInt("v",exportOffsets[numGAforLoop[imageIndex]][1]);
+        temp.setInt("y",exportOffsets[numGAforLoop[imageIndex]][1]);
 
         // Rotation
         dataToSend += tagDecoder[0].rotation[u][v];
         dataToSend += "\n" ;
-        temp.setInt("r",tagDecoder[0].rotation[u][v]);
+        temp.setInt("rot",tagDecoder[0].rotation[u][v]);
         
-        objects.setJSONObject(u*tagDecoder[0].V+v,temp);
+        //json_grid.setJSONObject(u*tagDecoder[0].V+v,temp);
+        json_grid.setJSONObject(object_cnt,temp);
+        object_cnt++;
         
       }
     }
     
-    json_data.setJSONArray("objects",objects);
+    json_data.setJSONArray("grid",json_grid);
     
      // Added from here to 
-     //HACK
+     // HACK
      
      JSONArray densities = new JSONArray();
      
      for(int i=0;i<6;i++){
-       densities.setFloat(i,round(density_values[i]));
+       densities.setInt(i,round(density_values[i]));
      }
      
-     json_data.setJSONArray("density_values",densities);
+     json_objects.setJSONArray("density",densities);
      
      
       dataToSend += round(density_values[0])+"";
@@ -189,20 +194,25 @@ void sendData() {
     int mid_old = int(persons[0]+persons[1]/2);
     int young = int(persons[2]);
     
+    /**
     json_data.setFloat("old",mid_old);
     json_data.setFloat("mid",mid_old);
     json_data.setFloat("young",mid_old);
+    **/
     
     JSONObject population = new JSONObject();
     population.setInt("old",mid_old);
     population.setInt("mid",mid_old);
     population.setInt("young",young);
     
+    json_objects.setJSONObject("population",population);
     
     dataToSend += mid_old+"\t"; //old
     dataToSend += mid_old+"\t"; // mid
     dataToSend += young+"\t"; //young
     dataToSend += "\n";
+    
+    json_data.setJSONObject("objects",json_objects);
     
     // Saves dataToSend as a text file for Debugging
     //saveStrings("data.txt", split(dataToSend, "\n"));
@@ -210,14 +220,18 @@ void sendData() {
     // Sends dataToSend to local host via UDP
     udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
-    //println(json_data);
+    JSONObject json = new JSONObject();
+    json.setJSONObject("data",json_data);
+    json.setInt("id",1); // hardcode;
+    json.setString("opcode","init");
     
+    saveJSONObject(json,"test.json");
     
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
       udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
-      //udp.send(json_data, UDPServer_IP,UDPServer_PORT);
-      //saveJSONObject(json_data,"test.json");
+      //udp.send(json, UDPServer_IP,UDPServer_PORT);
+      saveJSONObject(json,"test.json");
       udpDataLastTime = millis();
       //println("data was send through UDP");
     }

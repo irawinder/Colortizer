@@ -7,7 +7,7 @@
  
 // <--- BEGIN UDP to External Server --->
 
-boolean UDPtoServer = false;
+boolean UDPtoServer = true;
 
 //// Karthik's Machine
 //String UDPServer_IP = "104.131.179.31";

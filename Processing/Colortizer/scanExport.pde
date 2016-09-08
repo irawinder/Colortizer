@@ -7,7 +7,7 @@ int local_UDPin = 6669;
 int local_UDPout = 6152;
 
 
-JSONObject json_data = new JSONObject();
+//JSONObject json_data = new JSONObject();
 
 boolean busyImporting = false;
 boolean viaUDP = true;
@@ -24,6 +24,9 @@ float [] persons = new float[3]; // old,med,young
 float floating_min = 10000;
 float floating_max = -10000;
 
+boolean isCityIOConnected = false;
+CityIOCloudAPI cityio;
+
 void startUDP(){
 
   if (decode == false) {
@@ -39,6 +42,12 @@ void startUDP(){
 
 void sendData() {
   
+  if(!isCityIOConnected) {
+    cityio = new CityIOCloudAPI(this, UDPServer_IP, UDPServer_PORT, "citymatrix", 16, 16);
+    cityio.connect();
+    isCityIOConnected = true;
+  }
+  
   if (viaUDP && updateReceived) {
     String dataToSend = "";
     /**
@@ -46,7 +55,7 @@ void sendData() {
     */
     state_data=new int[0][0];
     
-    JSONObject json_objects = new JSONObject();
+    ComparableJSONObject json_objects = new ComparableJSONObject();
     
     // tag to denote that tag comes from colortizer
     dataToSend += LOCAL_FRIENDLY_NAME;
@@ -66,11 +75,11 @@ void sendData() {
     dataToSend += "\t" ;
     dataToSend += tagDecoder[0].V;
     dataToSend += "\n" ;
-    JSONObject grid_def = new JSONObject();
-    grid_def.setInt("x",tagDecoder[0].U);
-    grid_def.setInt("y",tagDecoder[0].V);
+    //JSONObject grid_def = new JSONObject();
+    //grid_def.setInt("x",tagDecoder[0].U);
+    //grid_def.setInt("y",tagDecoder[0].V);
 
-    json_objects.setJSONObject("gridExtents",grid_def);
+    //json_objects.setJSONObject("gridExtents",grid_def);
     
     
     // IDMax Value
@@ -168,7 +177,7 @@ void sendData() {
       }
     }
     
-    json_data.setJSONArray("grid",json_grid);
+    //json_data.setJSONArray("grid",json_grid);
     //saveJSONArray(json_grid,"grid.json");
     
      // Added from here to 
@@ -204,19 +213,16 @@ void sendData() {
     json_data.setFloat("young",mid_old);
     **/
     
-    JSONObject population = new JSONObject();
-    population.setInt("old",mid_old);
-    population.setInt("mid",mid_old);
-    population.setInt("young",young);
-    
-    json_objects.setJSONObject("population",population);
+    json_objects.setInt("pop_old",mid_old);
+    json_objects.setInt("pop_mid",mid_old);
+    json_objects.setInt("pop_young",young);
     
     dataToSend += mid_old+"\t"; //old
     dataToSend += mid_old+"\t"; // mid
     dataToSend += young+"\t"; //young
     dataToSend += "\n";
     
-    json_data.setJSONObject("objects",json_objects);
+    //json_data.setJSONObject("objects",json_objects);
     
     // Saves dataToSend as a text file for Debugging
     //saveStrings("data.txt", split(dataToSend, "\n"));
@@ -227,24 +233,16 @@ void sendData() {
 
     //println(json_data);
     //saveJSONObject(json_data,"test.json");
-    
-    // formatting json structure
-    JSONObject json_table = new JSONObject();
-    json_table.setJSONObject("data",json_data);
-    json_table.setInt("id",1);
-    json_table.setString("opcode","init");
-
-    JSONArray json_packets = new JSONArray();
-    json_packets.setJSONObject(0,json_table);
 
     //JSONObject json_all = new JSONObject();
     //json_all.setJSONArray("packets",json_packets);
     //saveJSONObject(json_all,"all.json");
 
     // Sends dataToSend to external host via UDP "once in a while"
-    if(UDPtoServer && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
-      udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
+    if(UDPtoServer) {// && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
+      //udp.send( dataToSend, UDPServer_IP, UDPServer_PORT );
       // udp.send(json_packets.toString(), UDPServer_IP,UDPServer_PORT);
+      cityio.handleUpdate(json_grid, json_objects);
       udpDataLastTime = millis();
       //println("data was send through UDP");
     }

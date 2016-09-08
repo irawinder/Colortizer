@@ -16,7 +16,7 @@ boolean UDPtoServer = true;
 
 // CityScope Machine
 String UDPServer_IP = "cityscope.media.mit.edu";
-int UDPServer_PORT = 9998;
+int UDPServer_PORT = 9997;
 
 
 // <--- END UDP to External Server --->

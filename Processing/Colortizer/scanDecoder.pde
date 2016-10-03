@@ -34,7 +34,7 @@ float[][] buildingDef = new float[][]{
   {2001, 3},
   {2110, 4},
   {2101, 5},
-  {2011, 6},
+  {2011, -1}, //Temp for CityMatrix Mirror Ar
   {2111, 7},
   
   {3000, 8},

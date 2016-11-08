@@ -43,7 +43,7 @@ void startUDP(){
 void sendData() {
   
   if(!isCityIOConnected) {
-    cityio = new CityIOCloudAPI(this, UDPServer_IP, UDPServer_PORT, "citymatrix", 16, 16);
+    cityio = new CityIOCloudAPI(this, UDPServer_IP, UDPServer_PORT, "citymatrix_ml", 16, 16);
     cityio.connect();
     isCityIOConnected = true;
   }

@@ -251,19 +251,19 @@ void sendData() {
      
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     
-    if (frameCount % 20 == 0 && dataToSend != udpDataPrevious) {
-      JSONObject json_all = new JSONObject();
-      json_all.setJSONObject("objects",json_objects);
-      json_all.setJSONArray("grid",json_grid);
-      //println(json_all);
-      //saveJSONObject(json_all,"all.json");
-      
-      udp.send( dataToSend, "localhost", 7001 ); //YZ
-      udpDataPrevious = dataToSend;
-      
-      udp.send( json_all.toString(), "localhost", 7002 ); //YZ
-      
-    }
+//    if (frameCount % 20 == 0 && dataToSend != udpDataPrevious) {
+//      JSONObject json_all = new JSONObject();
+//      json_all.setJSONObject("objects",json_objects);
+//      json_all.setJSONArray("grid",json_grid);
+//      //println(json_all);
+//      //saveJSONObject(json_all,"all.json");
+//      
+//      udp.send( dataToSend, "localhost", 7001 ); //YZ
+//      udpDataPrevious = dataToSend;
+//      
+//      udp.send( json_all.toString(), "localhost", 7002 ); //YZ
+//      
+//    }
     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     

@@ -228,7 +228,7 @@ void sendData() {
     //saveStrings("data.txt", split(dataToSend, "\n"));
     
     // Sends dataToSend to local host via UDP
-    udp.send( dataToSend, local_UDPAddress, local_UDPout );
+    //udp.send( dataToSend, local_UDPAddress, local_UDPout );
     
 
     //println(json_data);
@@ -236,7 +236,9 @@ void sendData() {
 
     //JSONObject json_all = new JSONObject();
     //json_all.setJSONArray("packets",json_packets);
+    //println(json_all);
     //saveJSONObject(json_all,"all.json");
+    
 
     // Sends dataToSend to external host via UDP "once in a while"
     if(UDPtoServer) {// && (dataToSend != udpDataPrevious || millis() - udpDataLastTime > 60000)) {
@@ -250,8 +252,17 @@ void sendData() {
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////
     
     if (frameCount % 20 == 0 && dataToSend != udpDataPrevious) {
+      JSONObject json_all = new JSONObject();
+      json_all.setJSONObject("objects",json_objects);
+      json_all.setJSONArray("grid",json_grid);
+      //println(json_all);
+      //saveJSONObject(json_all,"all.json");
+      
       udp.send( dataToSend, "localhost", 7001 ); //YZ
       udpDataPrevious = dataToSend;
+      
+      udp.send( json_all.toString(), "localhost", 7002 ); //YZ
+      
     }
     
     //////////////////////////////////////// send to Rhino and Agents ///////////////////////////////////////////////

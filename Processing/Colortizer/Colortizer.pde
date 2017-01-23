@@ -33,7 +33,7 @@ Step 5: Run application
 
 // Set this to false if you only need NxN piece grid information
 // Set to true if you intend to make toggles and sliders
-boolean enableToggles = true;
+boolean enableToggles = false;
 
 // Change this number to change which Area is scanned (i.e. 0, 1, or 2)
 // Only used when you need feeds from multiple webcams, and each instance of colortizer is a different webcam

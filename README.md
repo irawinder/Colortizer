@@ -1,6 +1,5 @@
 # Colortizer Repository
-Solely Developed by Ira Winder [jiw@mit.edu] MIT Media Lab, Copyright March 2014
-
+Solely Developed by Ira Winder [jiw@mit.edu] MIT Media Lab
 Colortizer is open source software that translates a grid of color-tagged objects into a matrix of IDs and their rotation to serve projects like the open-source "CityScope" platform:
 [http://cp.media.mit.edu/city-simulation](http://cp.media.mit.edu/city-simulation), 
 [Youtube: Lego Scanning Technology Invented by MIT] (https://youtu.be/3jvmoj7pLZU)

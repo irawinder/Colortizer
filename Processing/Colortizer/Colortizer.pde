@@ -18,8 +18,8 @@ String version = "Colortizer, V4.3";
 // - August 4, 2015: IW - Add 8 More Tag Definitions, for a total of 24.
 // - August 5, 2015: IW - Made Extra Tag Definitions easy to turn on/off (i.e. constrain to 8, 16 or 24 IDs only)
 // - August 5, 2015: IW - Can save/load number of tag definitions to use, and displays state at bottom of screen
-// - August 16, 2015:IW - Added UI for locking click-and-drag Grid edits and for turning UMI client on/off 
-// - December 20, 2017:IW - Added Mouse-based UI for selecting corners to calibrate on scanGrid Screen
+// - August 16, 2015: IW - Added UI for locking click-and-drag Grid edits and for turning UMI client on/off 
+// - December 20, 2017: IW - Added Mouse-based UI for selecting corners to calibrate on scanGrid Screen
 /*
 
 SETUP:

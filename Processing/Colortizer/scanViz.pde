@@ -159,6 +159,11 @@ public void scanDisplay() {
   drawReferenceColors();
   translate(-(imgW+margLeft+margInputs), -(margTop+marg));
   
+  // Draws selection corners for corner calibration
+  translate(margLeft+margInputs, margTop); 
+  drawCornerSelect();
+  translate(-(margLeft+margInputs), -margTop);
+  
   // Draws status of IDs supported, gridLocked status, and UMI client state
   translate(imgW+margLeft+margInputs, margTop+imgH);
   drawVRMode();
@@ -184,7 +189,8 @@ public void printTitle() {
   text("Ira Winder, MIT Media Lab", 0, 4*tsize);
   text("Applet for gridded, programmable color detection", 0, 7*tsize);
   
-  text("Press '`' to connect/disconnect UMI Server", 0, 9.5*tsize);
+  //text("Press '`' to connect/disconnect UMI Server", 0, 9.5*tsize);
+  text("Press arrow keys or click to set corner position", 0, 9.5*tsize);
   text("Press 'g' to lock/unlock grid editing", 0, 11*tsize);
   text("Press 'r' to change ID support (0, 8, 16, or 24 IDs)", 0, 12.5*tsize);
   translate(-margLeft, 0);
@@ -439,6 +445,51 @@ void drawReferenceColors() {
   strokeWeight(2);
   stroke(#FFFF00);
   rect(20, baseindex*24, 12, 12);
+}
+
+void drawCornerSelect() {
+  // Draw Corners to visualize with one is selected
+  int cornerX, cornerY;
+  int buttonW = 10;
+  if (cornerIndex == 0) {
+    // Draw Upper Right Corner Status
+    cornerX = imgW;
+    cornerY = 0;
+  } else if (cornerIndex == 1) {
+    // Draw Upper Left Corner Status
+    cornerX = 0;
+    cornerY = 0;
+  } else if (cornerIndex == 2) {
+    // Draw Lower Left Corner Status
+    cornerX = 0;
+    cornerY = imgH;
+  } else if (cornerIndex == 3) {
+    // Draw Lower Right Corner Status
+    cornerX = imgW;
+    cornerY = imgH;
+  } else {
+    // Null Case, draw off screen
+    cornerX = -100;
+    cornerY = -100;
+  }
+  
+  // Draw Selection Box Outlines
+  stroke(200);
+  strokeWeight(2);
+  fill(0);
+  // Draw Upper Right Corner Status
+  ellipse(imgW, 0, buttonW, buttonW);
+  // Draw Upper Left Corner Status
+  ellipse(0, 0, buttonW, buttonW);
+  // Draw Lower Left Corner Status
+  ellipse(0, imgH, buttonW, buttonW);
+  // Draw Lower Right Corner Status
+  ellipse(imgW, imgH, buttonW, buttonW);
+  
+  // Draw Fill if Selected
+  noStroke();
+  fill(255, 150);
+  ellipse(cornerX, cornerY, buttonW, buttonW);
 }
 
 void drawUMIStatus() {
@@ -827,6 +878,39 @@ void clickCorner() {
   println("Y = " + mouseY);
 }
 
+void clickCornerBox() {
+  // Select Corner to "Nudge"
+  int cornerX, cornerY;
+  int buttonW = 15;
+  // Cycle through each of 4 corners
+  for (int i=0; i<4; i++) {
+    cornerX = margLeft+margInputs;
+    cornerY = margTop-margBottom;
+    if (i == 0) {
+      // Draw Upper Right Corner Status
+      cornerX += imgW;
+      cornerY += 0;
+    } else if (i == 1) {
+      // Draw Upper Left Corner Status
+      cornerX += 0;
+      cornerY += 0;
+    } else if (i == 2) {
+      // Draw Lower Left Corner Status
+      cornerX += 0;
+      cornerY += imgH;
+    } else if (i == 3) {
+      // Draw Lower Right Corner Status
+      cornerX += imgW;
+      cornerY += imgH;
+    }
+    
+    if (mouseX >= cornerX-buttonW/2 && mouseX <= cornerX+buttonW/2 && 
+        mouseY >= cornerY-buttonW/2 && mouseY <= cornerY+buttonW/2 ) {
+      cornerIndex = i;
+    }
+  }
+}
+
 public int MouseToX(int x) {
   return int((x - margLeft - margInputs)*((float)scanImage[imageIndex].width/imgW));
 }
@@ -864,6 +948,8 @@ void hoverTest() {
 void mouseClicked() {
   if (showCam) {
     clickCorner();
+  } else {
+    clickCornerBox();
   }
 }
 
@@ -879,6 +965,12 @@ void mousePressed() {
       xClick = MouseToX(mouseX);
       yClick = MouseToY(mouseY);
     }
+  }
+  
+  if (showCam) {
+    clickCorner();
+  } else {
+    clickCornerBox();
   }
 }
 
@@ -902,6 +994,12 @@ void mouseDragged() {
       gridLocations.setInt(imageIndex, 3 + gridIndex*4, yDrag);
     } 
     scanGrid[numGAforLoop[imageIndex] + gridIndex].updatePosition(getLocation(imageIndex, gridIndex));
+  }
+  
+  if (showCam) {
+    clickCorner();
+  } else {
+    clickCornerBox();
   }
 }
 

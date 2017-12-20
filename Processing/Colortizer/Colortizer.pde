@@ -1,5 +1,5 @@
-// Colortizer v4.2
-String version = "Colortizer, V4.2";
+// Colortizer v4.3
+String version = "Colortizer, V4.3";
 
 // This software distorts webcam feeds into rectilinear matrices of color data.
 // Run software to see key definitions
@@ -19,6 +19,7 @@ String version = "Colortizer, V4.2";
 // - August 5, 2015: IW - Made Extra Tag Definitions easy to turn on/off (i.e. constrain to 8, 16 or 24 IDs only)
 // - August 5, 2015: IW - Can save/load number of tag definitions to use, and displays state at bottom of screen
 // - August 16, 2015:IW - Added UI for locking click-and-drag Grid edits and for turning UMI client on/off 
+// - December 20, 2017:IW - Added Mouse-based UI for selecting corners to calibrate on scanGrid Screen
 /*
 
 SETUP:

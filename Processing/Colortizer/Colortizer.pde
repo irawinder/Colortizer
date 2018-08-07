@@ -48,7 +48,7 @@ int imageIndex = 0; //Selection of scanImage to start
 int[] numGridAreas; // loads from "numGridAreas.TSV"
 
 // Position within array that describes available cameras
-int camera = 0;
+int camera = 16;
 
 // Dimensions of surface being scanned
 float vizRatio = float(16)/(16); //Must match measurements in reality, i.e. a table surface
